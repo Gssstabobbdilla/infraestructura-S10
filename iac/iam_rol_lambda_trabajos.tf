@@ -41,8 +41,7 @@ resource "aws_iam_role_policy" "lambda_trabajos" {
           "sqs:GetQueueAttributes"
         ]
         Resource =[
-          aws_sqs_queue.trabajos.arn,
-          aws_sqs_queue.ruido_aleatorio.arn
+          aws_sqs_queue.trabajos.arn
         ] 
       }
     ]

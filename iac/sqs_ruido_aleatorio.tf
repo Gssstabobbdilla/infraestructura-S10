@@ -9,6 +9,9 @@ resource "aws_sns_topic_subscription" "ruido_aleatorio" {
   topic_arn = aws_sns_topic.nuevas_imagenes.arn
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.ruido_aleatorio.arn
+  depends_on = [
+    aws_sqs_queue_policy.ruido_aleatorio
+  ]
 }
 
 resource "aws_sqs_queue_policy" "ruido_aleatorio" {

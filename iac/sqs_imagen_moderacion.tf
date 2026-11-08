@@ -9,6 +9,9 @@ resource "aws_sns_topic_subscription" "imagen_moderacion" {
   topic_arn = aws_sns_topic.nuevas_imagenes.arn
   protocol  = "sqs"
   endpoint  = aws_sqs_queue.imagen_moderacion.arn
+  depends_on = [
+    aws_sqs_queue_policy.imagen_moderacion
+  ]
 }
 
 resource "aws_sqs_queue_policy" "imagen_moderacion" {
