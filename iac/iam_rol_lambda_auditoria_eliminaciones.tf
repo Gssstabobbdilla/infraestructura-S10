@@ -28,7 +28,7 @@ resource "aws_iam_role_policy" "auditoria_eliminaciones" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "PermitirEscrituraDeLogs"
+        Sid = "PermitirEscrituraDeLogs"
         Effect = "Allow"
         Action = [
           "logs:CreateLogGroup",
@@ -38,7 +38,7 @@ resource "aws_iam_role_policy" "auditoria_eliminaciones" {
         Resource = "arn:aws:logs:*:*:*"
       },
       {
-        Sid    = "PermitirConsumoColaEliminaciones"
+        Sid = "PermitirConsumoColaEliminaciones"
         Effect = "Allow"
         Action = [
           "sqs:ReceiveMessage",
