@@ -28,3 +28,18 @@ resource "aws_sqs_queue_policy" "imagenes_eliminadas" {
     ]
   })
 }
+
+resource "aws_lambda_event_source_mapping" "auditoria_eliminaciones" {
+  event_source_arn = aws_sqs_queue.imagenes_eliminadas.arn
+  function_name = aws_lambda_function.auditoria_eliminaciones.arn
+  enabled = true
+  batch_size = 1
+
+  scaling_config {
+    maximum_concurrency = 2
+  }
+
+  depends_on = [
+    aws_iam_role_policy.auditoria_eliminaciones
+  ]
+}
