@@ -1,6 +1,6 @@
 resource "aws_sqs_queue" "ruido_aleatorio" {
   name                       = "${var.project_name}-${var.environment}-ruido-aleatorio"
-  visibility_timeout_seconds = 60
+  visibility_timeout_seconds = 180
   message_retention_seconds  = 86400
   receive_wait_time_seconds  = 10
 }
@@ -33,4 +33,19 @@ resource "aws_sqs_queue_policy" "ruido_aleatorio" {
       }
     ]
   })
+}
+
+resource "aws_lambda_event_source_mapping" "cola_ruido" {
+  event_source_arn = aws_sqs_queue.ruido_aleatorio.arn
+  function_name    = aws_lambda_function.trabajos.arn
+  enabled          = true
+  batch_size       = 1
+
+  scaling_config {
+    maximum_concurrency = 2
+  }
+
+  depends_on = [
+    aws_iam_role_policy.lambda_cola_ruido
+  ]
 }
