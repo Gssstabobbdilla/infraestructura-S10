@@ -14,3 +14,34 @@ resource "aws_iam_role" "lambda_trabajos" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "lambda_trabajos" {
+  name = "${var.project_name}-${var.environment}-lambda-trabajos"
+  role = aws_iam_role.lambda_trabajos.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "PermitirEscrituraDeLogs"
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Sid = "PermitirConsumoDeCola"
+        Effect = "Allow"
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ]
+        Resource = aws_sqs_queue.trabajos.arn
+      }
+    ]
+  })
+}
