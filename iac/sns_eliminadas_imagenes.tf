@@ -28,3 +28,13 @@ resource "aws_sns_topic_policy" "eliminadas_imagenes" {
     ]
   })
 }
+
+resource "aws_sns_topic_subscription" "imagenes_eliminadas" {
+  topic_arn = aws_sns_topic.eliminadas_imagenes.arn
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.imagenes_eliminadas.arn
+
+  depends_on = [
+    aws_sqs_queue_policy.imagenes_eliminadas
+  ]
+}
