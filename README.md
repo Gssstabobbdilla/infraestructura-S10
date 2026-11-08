@@ -47,9 +47,6 @@ Se crearon dos sNS:
 - **Imágenes nuevas (`aws_sns_topic.nuevas_imagenes`)**: Recibe los eventos de creación de objetos en el bucket de entrada.
 - **Imágenes eliminadas (`aws_sns_topic.eliminadas_imagenes`)**: Recibe eventos de eliminación.
 
-Los recursos `aws_sns_topic_policy` autorizan al servicio S3 a publicar en cada uno. La condición `aws:SourceArn` restringe el permiso al bucket de entrada, en vez de permitir publicaciones desde cualquier bucket.
-
-
 ## Requisitos
 
 - Terraform instalado
