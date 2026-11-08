@@ -45,3 +45,20 @@ resource "aws_iam_role_policy" "lambda_trabajos" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "lambda_escritura_s3" {
+  name = "${var.project_name}-${var.environment}-lambda-escritura-s3"
+  role = aws_iam_role.lambda_trabajos.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid      = "PermitirGuardarImagenesDeRuido"
+        Effect   = "Allow"
+        Action   = ["s3:PutObject"]
+        Resource = "${aws_s3_bucket.output.arn}/ruido-aleatorio/*"
+      }
+    ]
+  })
+}
