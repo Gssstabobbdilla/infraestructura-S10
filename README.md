@@ -29,6 +29,27 @@ Los archivos de infraestructura se encuentran en `iac/`.
 | `s3_input_bucket.tf` | Bucket privado para imagenes de entrada |
 | `s3_output_bucket.tf` | Bucket privado para los resulados |
 
+## Componentes de AWS
+
+### Amazon S3
+
+Se utilizan dos buckets privados:
+
+- **Bucket de entrada (`aws_s3_bucket.input`)**: Se encarga de recibir las imágenes originales. Sus eventos de creación y eliminación dan inicio a las notificaciones
+- **Bucket de salida (`aws_s3_bucket.output`)**: Se encarga de guardar los resultados del procesamiento. 
+
+Cada bucket tiene un recurso `aws_s3_bucket_public_access_block` asociado. Este bloque deshabilita el acceso público mediante ACL o políticas, para evitar que las imágenes queden expuestas.
+
+### Amazon SNS
+
+Se crearon dos sNS:
+
+- **Imágenes nuevas (`aws_sns_topic.nuevas_imagenes`)**: Recibe los eventos de creación de objetos en el bucket de entrada.
+- **Imágenes eliminadas (`aws_sns_topic.eliminadas_imagenes`)**: Recibe eventos de eliminación.
+
+Los recursos `aws_sns_topic_policy` autorizan al servicio S3 a publicar en cada uno. La condición `aws:SourceArn` restringe el permiso al bucket de entrada, en vez de permitir publicaciones desde cualquier bucket.
+
+
 ## Requisitos
 
 - Terraform instalado
